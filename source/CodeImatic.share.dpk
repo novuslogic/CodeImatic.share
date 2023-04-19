@@ -38,8 +38,11 @@ requires
   NovusCodeLibrary_XML,
   NovusCodeLibrary_Parser,
   NovusCodeLibrary_Plugin,
-  NovusCodeLibrary_OS,
-  NovusCodeLibrary_Console;
+  NovusCodeLibrary_ENV,
+  NovusCodeLibrary_Console,
+  Jcl,
+  JvSystem,
+  PascalScript_Core_D27;
 
 end.
 
