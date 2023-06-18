@@ -1,6 +1,6 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{AD7F72B2-9B68-46A6-BD10-CBBEC9167E9C}</ProjectGuid>
+        <ProjectGuid>{47ED571F-3238-42DD-810F-74DEE44F76A1}</ProjectGuid>
         <MainSource>CodeImatic.share.dpk</MainSource>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
@@ -88,7 +88,7 @@
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
         <DCC_DcpOutput>..\build</DCC_DcpOutput>
         <DCC_BplOutput>..\build</DCC_BplOutput>
-        <DCC_UnitSearchPath>..\build;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>..\build;$(BDSCOMMONDIR)\Dcp\$(Platform);$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_DcuOutput>..\units\$(Platform)\</DCC_DcuOutput>
         <DCC_Description>CodeImatic share library</DCC_Description>
     </PropertyGroup>
@@ -166,6 +166,7 @@
         <DCCReference Include="Jcl.dcp"/>
         <DCCReference Include="JvSystem.dcp"/>
         <DCCReference Include="PascalScript_Core_D27.dcp"/>
+        <DCCReference Include="ProjectTemplate.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -186,7 +187,10 @@
                 <Source>
                     <Source Name="MainSource">CodeImatic.share.dpk</Source>
                 </Source>
-                <Excluded_Packages/>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k280.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp280.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                </Excluded_Packages>
             </Delphi.Personality>
             <Platforms>
                 <Platform value="Android">False</Platform>
@@ -214,6 +218,12 @@
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\build\CodeImatic.share.bpl" Configuration="Debug" Class="ProjectOutput"/>
+                <DeployFile LocalName="..\build\CodeImatic.share.bpl" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win64">
+                        <RemoteName>CodeImatic_share.bpl</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployClass Name="AdditionalDebugSymbols">
                     <Platform Name="OSX32">
                         <Operation>1</Operation>
