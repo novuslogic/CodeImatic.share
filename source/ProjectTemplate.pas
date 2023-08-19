@@ -11,6 +11,10 @@ type
     fsTemplateName: String;
   public
     class function CreateProjectTemplate: tProjectTemplate;
+
+    property TemplateName: string
+      read fsTemplateName
+      write fsTemplateName;
   end;
 
 implementation
