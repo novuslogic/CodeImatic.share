@@ -1,7 +1,9 @@
 # CodeImatic.share Changelog
 
-* New Templatename property
+## Release v0.1.0
 
+* New TestUnits DunitX for Objectpascal
+* New Templatename property
 
 18/06/2023
 
