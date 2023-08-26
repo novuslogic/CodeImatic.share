@@ -3,7 +3,7 @@ unit ObjectPascalTest;
 interface
 
 uses
-  DUnitX.TestFramework, ObjectPascal;
+  DUnitX.TestFramework, ObjectPascal, OutputBase;
 
 type
   [TestFixture]
@@ -24,13 +24,6 @@ implementation
 
 procedure TCodeImaticShareTestObject.CompleObjectPascalTest;
 begin
-  //ObjectPascal
-
-
-
-
-
-
 
 
   Assert.IsTrue(False, 'This test intentionally fails');

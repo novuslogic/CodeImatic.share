@@ -197,13 +197,15 @@
         <DCCReference Include="NovusCodeLibrary_XML.dcp"/>
         <DCCReference Include="NovusCodeLibrary_Parser.dcp"/>
         <DCCReference Include="NovusCodeLibrary_Plugin.dcp"/>
-        <DCCReference Include="NovusCodeLibrary_ENV.dcp"/>
+        <DCCReference Include="NovusCodeLibrary_OS.dcp"/>
         <DCCReference Include="NovusCodeLibrary_Console.dcp"/>
         <DCCReference Include="Jcl.dcp"/>
         <DCCReference Include="JvSystem.dcp"/>
-        <DCCReference Include="PascalScript_Core_D27.dcp"/>
+        <DCCReference Include="PascalScript_Core_D28.dcp"/>
+        <DCCReference Include="dwsLibRuntime.dcp"/>
         <DCCReference Include="ProjectTemplate.pas"/>
         <DCCReference Include="ObjectPascal.pas"/>
+        <DCCReference Include="OutputBase.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

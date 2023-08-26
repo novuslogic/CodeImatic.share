@@ -2,28 +2,27 @@ unit ObjectPascal;
 
 interface
 
-uses dwsComp;
+uses OutputBase;
 
 type
   tObjectPascal = class(Tobject)
   private
-    fdws : TDelphiWebScript;
+    foOutput: tOutputBase;
   protected
   public
-    constructor Create;
+    constructor Create(aOutput: tOutputBase);
     destructor Destroy;
   end;
 
 implementation
 
-constructor tObjectPascal.create;
+constructor tObjectPascal.create(aOutput: tOutputBase);
 begin
-  fdws := TDelphiWebScript.Create(NIL);
+  foOutput := aOutput;
 end;
 
 destructor tObjectPascal.destroy;
 begin
-  fdws.Free;
 end;
 
 end.

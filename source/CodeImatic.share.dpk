@@ -38,15 +38,17 @@ requires
   NovusCodeLibrary_XML,
   NovusCodeLibrary_Parser,
   NovusCodeLibrary_Plugin,
-  NovusCodeLibrary_ENV,
+  NovusCodeLibrary_OS,
   NovusCodeLibrary_Console,
   Jcl,
   JvSystem,
-  PascalScript_Core_D27;
+  PascalScript_Core_D28,
+  dwsLibRuntime;
 
 contains
   ProjectTemplate in 'ProjectTemplate.pas',
-  ObjectPascal in 'ObjectPascal.pas';
+  ObjectPascal in 'ObjectPascal.pas',
+  OutputBase in 'OutputBase.pas';
 
 end.
 
