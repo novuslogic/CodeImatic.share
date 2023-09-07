@@ -1,0 +1,36 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{6A31B108-BD67-4F37-98A4-422D8A4AD729}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="CodeImatic.share.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="CodeImatic_share">
+        <MSBuild Projects="CodeImatic.share.dproj"/>
+    </Target>
+    <Target Name="CodeImatic_share:Clean">
+        <MSBuild Projects="CodeImatic.share.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="CodeImatic_share:Make">
+        <MSBuild Projects="CodeImatic.share.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="CodeImatic_share"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="CodeImatic_share:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="CodeImatic_share:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
