@@ -38,22 +38,15 @@ requires
   NovusCodeLibrary_XML,
   NovusCodeLibrary_Parser,
   NovusCodeLibrary_Plugin,
-{$IFDEF DELPHI11_UP}
   NovusCodeLibrary_OS,
-{$ELSE}
-  NovusCodeLibrary_ENV,
-{$ENDIF}
   NovusCodeLibrary_Console,
   Jcl,
   JvSystem,
-{$IFDEF DELPHI11_UP}
   PascalScript_Core_D28;
-{$ELSE}
-  PascalScript_Core_D27;
-{$ENDIF}
 
 contains
-  ProjectTemplate in 'ProjectTemplate.pas';
+  ProjectTemplate in 'ProjectTemplate.pas',
+  RuntimeBase in 'RuntimeBase.pas';
 
 end.
 
