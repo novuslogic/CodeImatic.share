@@ -39,16 +39,12 @@ requires
   NovusCodeLibrary_Parser,
   NovusCodeLibrary_Plugin,
   NovusCodeLibrary_OS,
-  NovusCodeLibrary_Console,
   Jcl,
   JvSystem,
-  PascalScript_Core_D28,
-  dwsLibRuntime;
+  PascalScript_Core_D28;
 
 contains
-  ProjectTemplate in 'ProjectTemplate.pas',
-  ObjectPascal in 'ObjectPascal.pas',
-  OutputBase in 'OutputBase.pas';
+  ProjectTemplate in 'ProjectTemplate.pas';
 
 end.
 
