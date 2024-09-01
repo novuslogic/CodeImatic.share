@@ -41,8 +41,12 @@ requires
   NovusCodeLibrary_OS,
   Jcl,
   JvSystem,
-  PascalScript_Core_D28;
 
+{$IFDEF DELPHI11}
+  PascalScript_Core_D28;
+{$ELSE}
+  PascalScript_Core_D29;
+{$ENDIF}
 contains
   ProjectTemplate in 'ProjectTemplate.pas';
 

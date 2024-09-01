@@ -2,6 +2,11 @@
 
 ## Release v0.1.0
 
+
+1/9/2024
+
+* Updated for NovuscodeLibrary v0.2.0
+* Update for Delphi 12
 * New TestUnits DunitX for Objectpascal
 * New Templatename property
 
