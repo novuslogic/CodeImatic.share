@@ -2,6 +2,10 @@
 
 ## Release v0.1.0
 
+22/09/2024
+
+* Now supporting new NovusLogger class 
+
 
 1/9/2024
 
