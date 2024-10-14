@@ -1,5 +1,12 @@
 # CodeImatic.share Changelog
 
+
+## Release v0.2.0
+
+* New ObjectPascalCompiler Class and test units.
+* Now supports Delphi 12 and  NovuscodeLibrary v0.2.0
+
+
 ## Release v0.1.0
 
 22/09/2024
@@ -20,5 +27,5 @@
 
 18/04/2023
 
-* Now supports Delphi 10.4 and Delphi 11 NovuscodeLibrary v0.1.0
+* Now supports Delphi 10.4 and Delphi 11 and NovuscodeLibrary v0.1.0
 

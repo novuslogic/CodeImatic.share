@@ -3,11 +3,11 @@
         <ProjectGuid>{E55DC565-0616-4EC8-8114-FE8A4C6A926E}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
-        <Projects Include="CodeImatic.share.dproj">
-            <Dependencies/>
-        </Projects>
         <Projects Include="CodeImatic.share.test.dproj">
             <Dependencies>CodeImatic.share.dproj</Dependencies>
+        </Projects>
+        <Projects Include="CodeImatic.share.dproj">
+            <Dependencies/>
         </Projects>
     </ItemGroup>
     <ProjectExtensions>
@@ -17,15 +17,6 @@
             <Default.Personality/>
         </BorlandProject>
     </ProjectExtensions>
-    <Target Name="CodeImatic_share">
-        <MSBuild Projects="CodeImatic.share.dproj"/>
-    </Target>
-    <Target Name="CodeImatic_share:Clean">
-        <MSBuild Projects="CodeImatic.share.dproj" Targets="Clean"/>
-    </Target>
-    <Target Name="CodeImatic_share:Make">
-        <MSBuild Projects="CodeImatic.share.dproj" Targets="Make"/>
-    </Target>
     <Target Name="CodeImatic_share_test" DependsOnTargets="CodeImatic.share">
         <MSBuild Projects="CodeImatic.share.test.dproj"/>
     </Target>
@@ -35,14 +26,23 @@
     <Target Name="CodeImatic_share_test:Make" DependsOnTargets="CodeImatic.share:Make">
         <MSBuild Projects="CodeImatic.share.test.dproj" Targets="Make"/>
     </Target>
+    <Target Name="CodeImatic_share">
+        <MSBuild Projects="CodeImatic.share.dproj"/>
+    </Target>
+    <Target Name="CodeImatic_share:Clean">
+        <MSBuild Projects="CodeImatic.share.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="CodeImatic_share:Make">
+        <MSBuild Projects="CodeImatic.share.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="CodeImatic_share;CodeImatic_share_test"/>
+        <CallTarget Targets="CodeImatic_share_test;CodeImatic_share"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="CodeImatic_share:Clean;CodeImatic_share_test:Clean"/>
+        <CallTarget Targets="CodeImatic_share_test:Clean;CodeImatic_share:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="CodeImatic_share:Make;CodeImatic_share_test:Make"/>
+        <CallTarget Targets="CodeImatic_share_test:Make;CodeImatic_share:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

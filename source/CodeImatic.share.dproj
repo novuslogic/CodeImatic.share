@@ -166,7 +166,6 @@
         <DCCReference Include="rtl.dcp"/>
         <DCCReference Include="NovusCodeLibrary_Utils.dcp"/>
         <DCCReference Include="NovusCodeLibrary_Object.dcp"/>
-        <DCCReference Include="NovusCodeLibrary_Logger.dcp"/>
         <DCCReference Include="NovusCodeLibrary_Log.dcp"/>
         <DCCReference Include="NovusCodeLibrary_XML.dcp"/>
         <DCCReference Include="NovusCodeLibrary_Parser.dcp"/>
@@ -177,6 +176,9 @@
         <DCCReference Include="JvSystem.dcp"/>
         <DCCReference Include="PascalScript_Core_D29.dcp"/>
         <DCCReference Include="ProjectTemplate.pas"/>
+        <DCCReference Include="RuntimeBase.pas"/>
+        <DCCReference Include="ObjectPascalCompiler.pas"/>
+        <DCCReference Include="Logger.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -230,7 +232,7 @@
                 <DeployFile LocalName="..\build\CodeImatic.share.bpl" Configuration="Debug" Class="ProjectOutput"/>
                 <DeployFile LocalName="..\build\CodeImatic.share.bpl" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win64">
-                        <RemoteName>CodeImatic_share.bpl</RemoteName>
+                        <RemoteName>CodeImatic.share.bpl</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

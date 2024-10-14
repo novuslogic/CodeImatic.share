@@ -34,7 +34,6 @@ requires
   rtl,
   NovusCodeLibrary_Utils,
   NovusCodeLibrary_Object,
-  NovusCodeLibrary_Logger,
   NovusCodeLibrary_Log,
   NovusCodeLibrary_XML,
   NovusCodeLibrary_Parser,
@@ -43,14 +42,13 @@ requires
   NovusCodeLibrary_OS,
   Jcl,
   JvSystem,
-
-{$IFDEF DELPHI11}
-  PascalScript_Core_D28;
-{$ELSE}
   PascalScript_Core_D29;
-{$ENDIF}
+
 contains
-  ProjectTemplate in 'ProjectTemplate.pas';
+  ProjectTemplate in 'ProjectTemplate.pas',
+  RuntimeBase in 'RuntimeBase.pas',
+  ObjectPascalCompiler in 'ObjectPascalCompiler.pas',
+  Logger in 'Logger.pas';
 
 end.
 
