@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils,  System.Classes, dwsCompiler,  NovusFileUtils,  dwsXPlatform,
   dwsComp, dwsExprs, dwsSymbols, dwsUtils, Logger, dwsUnitSymbols, System.IOUtils,
-  dwsRTTIConnector, dwsRTTIFunctions, NovusObject;
+  dwsRTTIConnector, dwsRTTIFunctions, NovusObject, dwsDebugger;
 
 type
   tObjectPascalCompiler = class(TNovusobject)
@@ -17,6 +17,7 @@ type
     fExec: IdwsProgramExecution;
     fsWorkingdirectory: String;
     fsSearchPath: string;
+    fDebugger: TdwsDebugger;
 
     procedure dwsUnitFunctionsWritelnEval(Info: TProgramInfo);
 
@@ -30,7 +31,7 @@ type
 
     function LoadStringFromFile(const FileName: string): string;
 
-    function Compile(aScript: String; aWorkingdirectory, aSearchPath: string): boolean;
+    function Compile(aScript: String; aWorkingdirectory, aSearchPath: string; aDebugger: Boolean): boolean;
   end;
 
 implementation
@@ -66,6 +67,7 @@ Var
   FCustomFunction: TdwsFunction;
   FCustomParameter: TdwsParameter;
 begin
+(*
   FCustomUnit := tdwsUnit.Create(NIl);
 
   FCustomUnit.UnitName := 'test';
@@ -80,12 +82,12 @@ begin
   FCustomParameter.Name := 'Msg';
   FCustomParameter.IsWritable := True;
   FCustomParameter.DataType := 'String';
-
+*)
 
 end;
 
 
-function tObjectPascalCompiler.Compile(aScript: String; aWorkingdirectory, aSearchPath: string): boolean;
+function tObjectPascalCompiler.Compile(aScript: String; aWorkingdirectory, aSearchPath: string; aDebugger: boolean): boolean;
 begin
   Result := false;
   fsSearchPath := aSearchPath;
