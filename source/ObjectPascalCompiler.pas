@@ -5,7 +5,8 @@ interface
 uses
   System.SysUtils,  System.Classes, dwsCompiler,  NovusFileUtils,  dwsXPlatform,
   dwsComp, dwsExprs, dwsSymbols, dwsUtils, Logger, dwsUnitSymbols, System.IOUtils,
-  dwsRTTIConnector, dwsRTTIFunctions, NovusObject, dwsDebugger;
+  dwsRTTIConnector, dwsRTTIFunctions, NovusObject, dwsDebugger, dwsInfo,
+  dwsScriptSource;
 
 type
   tObjectPascalCompiler = class(TNovusobject)
@@ -13,11 +14,16 @@ type
   protected
     fLogger: tLogger;
     fCompiler: TDelphiWebScript;
-    fProg: IdwsProgram;
-    fExec: IdwsProgramExecution;
+    fProgram: IdwsProgram;
+    fExecute: IdwsProgramExecution;
     fsWorkingdirectory: String;
     fsSearchPath: string;
     fDebugger: TdwsDebugger;
+
+    procedure DoDebugEval(exec: TdwsExecution; expr: TExprBase);
+    procedure DoDebugSuspended(sender : TObject);
+    procedure DoDebugExceptionNotification(const exceptObj : IInfo);
+    procedure DoDebugMessage(const msg : String);
 
     procedure dwsUnitFunctionsWritelnEval(Info: TProgramInfo);
 
@@ -54,10 +60,18 @@ begin
   fLogger:= aLogger;
 
   fCompiler := TDelphiWebScript.Create(nil);
+
+  fDebugger := TdwsDebugger.Create(nil);
+
+  fDebugger.OnDebug:=DoDebugEval;
+  fDebugger.OnDebugMessage:=DoDebugMessage;
+  fDebugger.OnNotifyException:=DoDebugExceptionNotification;
+  fDebugger.OnDebugSuspended:=DoDebugSuspended;
 end;
 
 destructor tObjectPascalCompiler.destroy;
 begin
+  fDebugger.Free;
   fCompiler.Free;
 end;
 
@@ -67,10 +81,10 @@ Var
   FCustomFunction: TdwsFunction;
   FCustomParameter: TdwsParameter;
 begin
-(*
+
   FCustomUnit := tdwsUnit.Create(NIl);
 
-  FCustomUnit.UnitName := 'test';
+  FCustomUnit.UnitName := 'insternal';
   FCustomUnit.Script := fCompiler;
 
   FCustomFunction := FCustomUnit.Functions.Add;
@@ -82,7 +96,7 @@ begin
   FCustomParameter.Name := 'Msg';
   FCustomParameter.IsWritable := True;
   FCustomParameter.DataType := 'String';
-*)
+
 
 end;
 
@@ -101,26 +115,46 @@ begin
 
   AddCustomUnits;
 
-  fProg := fCompiler.Compile(aScript);
+  fProgram := fCompiler.Compile(aScript);
 
-  if fProg.Msgs.HasErrors then
+  if fProgram.Msgs.HasErrors then
     begin
-      fLogger.Log.AddLogError(fProg.Msgs.AsInfo);
+      fLogger.Log.AddLogError(fProgram.Msgs.AsInfo);
 
       Exit;
     end;
 
-  fExec := fProg.Execute;
+  If Not aDebugger then
+    fExecute := fProgram.Execute
+  else
+  begin
+    fDebugger.Breakpoints.Add(11, FProgram.SourceList[0].SourceFile.Name);
 
-  if fExec.Msgs.HasErrors then
+
+    fExecute := FProgram.CreateNewExecution;
+
+
+
+    FDebugger.BeginDebug(fExecute);
+
+
+
+    FDebugger.EndDebug;
+
+  end;
+
+
+
+  if fExecute.Msgs.HasErrors then
     begin
-      fLogger.Log.AddLogError(fExec.Msgs.AsInfo);
+      fLogger.Log.AddLogError(fExecute.Msgs.AsInfo);
 
       Exit;
     end
   else
      begin
-       fLogger.Log.AddLogInformation(fExec.Result.ToString);
+       If Trim(fExecute.Result.ToString) <> '' then
+         fLogger.Log.AddLogInformation(fExecute.Result.ToString);
 
        Result := True;
      end;
@@ -150,9 +184,7 @@ end;
 
 procedure tObjectPascalCompiler.dwsUnitFunctionsWritelnEval(Info: TProgramInfo);
 begin
-
-  var TmpInfo := Info;
-
+  fLogger.Log.AddLogInformation(Info.ValueAsString['Msg']);
 end;
 
 function tObjectPascalCompiler.GetUnitFilename(aUnitName: String): string;
@@ -162,7 +194,6 @@ begin
   lsUnitNameFilename := aUnitName;
   if lowercase(TNovusFileUtils.ExtractFileExtenion(aUnitName)) <> 'pas'  then
     lsUnitNameFilename := aUnitName + '.pas';
-
 
   var FullWorkingDirectory := trim(TNovusFileUtils.TrailingBackSlash(fsWorkingdirectory) +lsUnitNameFilename);
   var FullSearchPath := Trim(TNovusFileUtils.TrailingBackSlash(fsSearchPath)+ lsUnitNameFilename);
@@ -175,6 +206,63 @@ begin
   else
     result := lsUnitNameFilename;
 end;
+
+// DoDebugEval
+procedure tObjectPascalCompiler.DoDebugEval(exec: TdwsExecution; expr: TExprBase);
+var
+  p: TScriptPos;
+begin
+  p:=expr.ScriptPos;
+
+   (*
+   p:=expr.ScriptPos;
+   if p.Line=FDebugEvalAtLine then begin
+      FDebugLastEvalResult := FDebugger.EvaluateAsString(FDebugEvalExpr, @p);
+      FDebugLastEvalScriptPos := FDebugger.CurrentScriptPos;
+   end;
+   if FStepTest <> '' then begin
+      FStepTest := FStepTest + expr.ScriptPos.AsInfo + ', ';
+      TdwsDSCStepDetail.Create(FDebugger);
+   end;
+   *)
+end;
+
+// DoDebugMessage
+procedure tObjectPascalCompiler.DoDebugMessage(const msg : String);
+begin
+  //FDebugLastMessage:=msg;
+end;
+
+// DoDebugExceptionNotification
+procedure tObjectPascalCompiler.DoDebugExceptionNotification(const exceptObj : IInfo);
+var
+expr : TExprBase;
+begin
+  (*
+   if exceptObj<>nil then
+      expr:=exceptObj.Exec.GetLastScriptErrorExpr
+   else expr:=nil;
+   if expr<>nil then
+      FDebugLastNotificationPos:=expr.ScriptPos
+   else FDebugLastNotificationPos:=cNullPos;
+   *)
+end;
+
+// DoDebugSuspended
+procedure tObjectPascalCompiler.DoDebugSuspended(sender : TObject);
+begin
+  FDebugger.Watches.Update;
+  FDebugger.Resume;
+  (*
+   Inc(FDebugResumed);
+   FDebugger.Watches.Update;
+   FDebugLastSuspendScriptPos := FDebugger.CurrentScriptPos;
+   if FDebugSuspendEvalExpr <> '' then
+      FDebugSuspendLastEvalResult := FDebugger.EvaluateAsString(FDebugSuspendEvalExpr);
+   FDebugger.Resume;
+  *)
+end;
+
 
 
 end.

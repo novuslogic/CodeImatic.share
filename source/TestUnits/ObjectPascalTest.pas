@@ -11,7 +11,7 @@ type
   public
     [Test]
     [TestCase('Test1','D:\Projects\CodeImatic.share\source\TestUnits\TestCode\Main.pas, D:\Projects\CodeImatic.share\source\TestUnits\TestCode\')]
-    procedure CompleObjectPascalTest(aFilename: String; aWorkingdirectory: string; aSearchPath: String);
+    procedure CompleObjectPascalTest(aFilename: String; aWorkingdirectory: string; aSearchPath: String; aDebugger: Boolean);
     [Test]
     procedure CompleObjectPascalBasicText;
     // Test with TestCase Attribute to supply parameters.
@@ -23,7 +23,7 @@ type
 
 implementation
 
-procedure TCodeImaticShareTestObject.CompleObjectPascalTest(aFilename: String; aWorkingdirectory: string; aSearchPath: String);
+procedure TCodeImaticShareTestObject.CompleObjectPascalTest(aFilename: String; aWorkingdirectory: string; aSearchPath: String; aDebugger: Boolean);
 var
   fObjectPascalCompiler: tObjectPascalCompiler;
   fLogger: tLogger;
@@ -35,7 +35,7 @@ begin
 
     var Script := fObjectPascalCompiler.LoadStringFromFile(aFilename);
 
-    if not fObjectPascalCompiler.Compile(Script, aWorkingdirectory, aSearchPath) then
+    if not fObjectPascalCompiler.Compile(Script, aWorkingdirectory, aSearchPath, true) then
       Assert.IsTrue(False, 'This test intentionally fails');
 
 
@@ -59,7 +59,7 @@ begin
       'PrintLn("Hello from ObjectPascal!");' + sLineBreak +
       'PrintLn("Current Time: " + TimeToStr(Now));';
 
-    if not fObjectPascalCompiler.Compile(Script, '', '') then
+    if not fObjectPascalCompiler.Compile(Script, '', '', false) then
       Assert.IsTrue(False, 'This test intentionally fails');
 
 
