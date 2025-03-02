@@ -1,18 +1,18 @@
-unit ObjectPascalCompiler;
+unit CodeImatic.ObjectPascal;
 
 interface
 
 uses
   System.SysUtils,  System.Classes, dwsCompiler,  NovusFileUtils,  dwsXPlatform,
-  dwsComp, dwsExprs, dwsSymbols, dwsUtils, Logger, dwsUnitSymbols, System.IOUtils,
+  dwsComp, dwsExprs, dwsSymbols, dwsUtils, CodeImatic.Output, dwsUnitSymbols, System.IOUtils,
   dwsRTTIConnector, dwsRTTIFunctions, NovusObject, dwsDebugger, dwsInfo,
   dwsScriptSource;
 
 type
-  tObjectPascalCompiler = class(TNovusobject)
+  tcimObjectPascal = class(TNovusobject)
   private
   protected
-    fLogger: tLogger;
+    fLogger: tcimOutput;
     fCompiler: TDelphiWebScript;
     fProgram: IdwsProgram;
     fExecute: IdwsProgramExecution;
@@ -32,17 +32,17 @@ type
     function DoNeedUnitEx(const unitName : String; var unitSource, unitLocation : String) : IdwsUnit;
     procedure DoIncludeEx(const scriptName: String; var scriptSource, scriptLocation : String);
   public
-    constructor Create(aLogger: tLogger);
+    constructor Create(aOutput: tcimOutput);
     destructor Destroy;
 
     function LoadStringFromFile(const FileName: string): string;
 
-    function Compile(aScript: String; aWorkingdirectory, aSearchPath: string; aDebugger: Boolean): boolean;
+    function Compile(aScript: String; aWorkingdirectory, aSearchPath: string; aCompileOnly: Boolean;aDebugger: boolean): boolean;
   end;
 
 implementation
 
-function tObjectPascalCompiler.LoadStringFromFile(const FileName: string): string;
+function tcimObjectPascal.LoadStringFromFile(const FileName: string): string;
 var
   Strings: TStringList;
 begin
@@ -55,9 +55,9 @@ begin
   end;
 end;
 
-constructor tObjectPascalCompiler.create(aLogger: tLogger);
+constructor tcimObjectPascal.create(aOutput: tcimOutput);
 begin
-  fLogger:= aLogger;
+  fLogger:= aOutput;
 
   fCompiler := TDelphiWebScript.Create(nil);
 
@@ -69,13 +69,13 @@ begin
   fDebugger.OnDebugSuspended:=DoDebugSuspended;
 end;
 
-destructor tObjectPascalCompiler.destroy;
+destructor tcimObjectPascal.destroy;
 begin
   fDebugger.Free;
   fCompiler.Free;
 end;
 
-procedure tObjectPascalCompiler.AddCustomUnits;
+procedure tcimObjectPascal.AddCustomUnits;
 Var
   FCustomUnit: tdwsUnit;
   FCustomFunction: TdwsFunction;
@@ -101,7 +101,7 @@ begin
 end;
 
 
-function tObjectPascalCompiler.Compile(aScript: String; aWorkingdirectory, aSearchPath: string; aDebugger: boolean): boolean;
+function tcimObjectPascal.Compile(aScript: String; aWorkingdirectory, aSearchPath: string; aCompileOnly: Boolean;aDebugger: boolean): boolean;
 begin
   Result := false;
   fsSearchPath := aSearchPath;
@@ -119,7 +119,14 @@ begin
 
   if fProgram.Msgs.HasErrors then
     begin
-      fLogger.Log.AddLogError(fProgram.Msgs.AsInfo);
+      fLogger.oLog.AddLogError(Trim(fProgram.Msgs.AsInfo));
+
+      Exit;
+    end;
+
+  If aCompileOnly then
+    begin
+      Result := true;
 
       Exit;
     end;
@@ -143,51 +150,44 @@ begin
 
   end;
 
-
-
   if fExecute.Msgs.HasErrors then
     begin
-      fLogger.Log.AddLogError(fExecute.Msgs.AsInfo);
+      fLogger.oLog.AddLogError(fExecute.Msgs.AsInfo);
 
       Exit;
     end
   else
      begin
        If Trim(fExecute.Result.ToString) <> '' then
-         fLogger.Log.AddLogInformation(fExecute.Result.ToString);
+         fLogger.oLog.AddLogInformation(fExecute.Result.ToString);
 
        Result := True;
      end;
 end;
 
-function tObjectPascalCompiler.DoNeedUnitEx(const unitName : String; var unitSource, unitLocation : String) : IdwsUnit;
+function tcimObjectPascal.DoNeedUnitEx(const unitName : String; var unitSource, unitLocation : String) : IdwsUnit;
 begin
   Result := NIL;
   DoIncludeEx(unitName, unitSource, unitLocation);
 end;
 
-procedure tObjectPascalCompiler.DoIncludeEx(const scriptName: String; var scriptSource, scriptLocation : String);
+procedure tcimObjectPascal.DoIncludeEx(const scriptName: String; var scriptSource, scriptLocation : String);
 begin
   var fsFilename := GetUnitFilename(scriptName);
 
   if TFile.Exists(fsFilename) then
     begin
       scriptSource := LoadTextFromFile(fsFilename);
-
-
-
-
-
     end;
 end;
 
 
-procedure tObjectPascalCompiler.dwsUnitFunctionsWritelnEval(Info: TProgramInfo);
+procedure tcimObjectPascal.dwsUnitFunctionsWritelnEval(Info: TProgramInfo);
 begin
-  fLogger.Log.AddLogInformation(Info.ValueAsString['Msg']);
+  fLogger.oLog.AddLogInformation(Info.ValueAsString['Msg']);
 end;
 
-function tObjectPascalCompiler.GetUnitFilename(aUnitName: String): string;
+function tcimObjectPascal.GetUnitFilename(aUnitName: String): string;
 var
   lsUnitNameFilename: String;
 begin
@@ -208,7 +208,7 @@ begin
 end;
 
 // DoDebugEval
-procedure tObjectPascalCompiler.DoDebugEval(exec: TdwsExecution; expr: TExprBase);
+procedure tcimObjectPascal.DoDebugEval(exec: TdwsExecution; expr: TExprBase);
 var
   p: TScriptPos;
 begin
@@ -228,13 +228,13 @@ begin
 end;
 
 // DoDebugMessage
-procedure tObjectPascalCompiler.DoDebugMessage(const msg : String);
+procedure tcimObjectPascal.DoDebugMessage(const msg : String);
 begin
   //FDebugLastMessage:=msg;
 end;
 
 // DoDebugExceptionNotification
-procedure tObjectPascalCompiler.DoDebugExceptionNotification(const exceptObj : IInfo);
+procedure tcimObjectPascal.DoDebugExceptionNotification(const exceptObj : IInfo);
 var
 expr : TExprBase;
 begin
@@ -249,7 +249,7 @@ begin
 end;
 
 // DoDebugSuspended
-procedure tObjectPascalCompiler.DoDebugSuspended(sender : TObject);
+procedure tcimObjectPascal.DoDebugSuspended(sender : TObject);
 begin
   FDebugger.Watches.Update;
   FDebugger.Resume;

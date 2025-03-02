@@ -3,7 +3,7 @@ unit ObjectPascalTest;
 interface
 
 uses
-  DUnitX.TestFramework, ObjectPascalCompiler, Logger;
+  DUnitX.TestFramework, CodeImatic.ObjectPascal, CodeImatic.Output;
 
 type
   [TestFixture]
@@ -25,47 +25,47 @@ implementation
 
 procedure TCodeImaticShareTestObject.CompleObjectPascalTest(aFilename: String; aWorkingdirectory: string; aSearchPath: String; aDebugger: Boolean);
 var
-  fObjectPascalCompiler: tObjectPascalCompiler;
-  fLogger: tLogger;
+  fObjectPascal: tcimObjectPascal;
+  fOutput: tcimOutput;
 begin
   Try
-    fLogger:= tLogger.Create(True);
+    fOutput:= tcimOutput.Create(True, '');
 
-    fObjectPascalCompiler := tObjectPascalCompiler.Create(fLogger);
+    fObjectPascal := tcimObjectPascal.Create(fOutput);
 
-    var Script := fObjectPascalCompiler.LoadStringFromFile(aFilename);
+    var Script := fObjectPascal.LoadStringFromFile(aFilename);
 
-    if not fObjectPascalCompiler.Compile(Script, aWorkingdirectory, aSearchPath, true) then
+    if not fObjectPascal.Compile(Script, aWorkingdirectory, aSearchPath, True, False) then
       Assert.IsTrue(False, 'This test intentionally fails');
 
 
   Finally
-    fObjectPascalCompiler.Free;
-    fLogger.Free;
+    fObjectPascal.Free;
+    fOutput.Free;
   End;
 end;
 
 procedure TCodeImaticShareTestObject.CompleObjectPascalBasicText;
 var
-  fObjectPascalCompiler: tObjectPascalCompiler;
-  fLogger: tLogger;
+  fObjectPascal: tcimObjectPascal;
+  fOutput: tcimOutput;
 begin
   Try
-    fLogger:= tLogger.Create(True);
+    fOutput:= tcimOutput.Create(True, '');
 
-    fObjectPascalCompiler := tObjectPascalCompiler.Create(fLogger);
+    fObjectPascal := tcimObjectPascal.Create(fOutput);
 
     var Script :=
       'PrintLn("Hello from ObjectPascal!");' + sLineBreak +
       'PrintLn("Current Time: " + TimeToStr(Now));';
 
-    if not fObjectPascalCompiler.Compile(Script, '', '', false) then
+    if not fObjectPascal.Compile(Script, '', '', true, false) then
       Assert.IsTrue(False, 'This test intentionally fails');
 
 
   Finally
-    fObjectPascalCompiler.Free;
-    fLogger.Free;
+    fObjectPascal.Free;
+    fOutput.Free;
   End;
 end;
 

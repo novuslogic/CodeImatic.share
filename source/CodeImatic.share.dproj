@@ -166,7 +166,7 @@
         <DCCReference Include="rtl.dcp"/>
         <DCCReference Include="NovusCodeLibrary_Utils.dcp"/>
         <DCCReference Include="NovusCodeLibrary_Object.dcp"/>
-        <DCCReference Include="NovusCodeLibrary_Log.dcp"/>
+        <DCCReference Include="NovusCodeLibrary_Logger.dcp"/>
         <DCCReference Include="NovusCodeLibrary_XML.dcp"/>
         <DCCReference Include="NovusCodeLibrary_Parser.dcp"/>
         <DCCReference Include="NovusCodeLibrary_Plugin.dcp"/>
@@ -175,10 +175,10 @@
         <DCCReference Include="Jcl.dcp"/>
         <DCCReference Include="JvSystem.dcp"/>
         <DCCReference Include="PascalScript_Core_D29.dcp"/>
-        <DCCReference Include="ProjectTemplate.pas"/>
-        <DCCReference Include="RuntimeBase.pas"/>
-        <DCCReference Include="ObjectPascalCompiler.pas"/>
-        <DCCReference Include="Logger.pas"/>
+        <DCCReference Include="CodeImatic.ProjectTemplate.pas"/>
+        <DCCReference Include="CodeImatic.RuntimeBase.pas"/>
+        <DCCReference Include="CodeImatic.ObjectPascal.pas"/>
+        <DCCReference Include="CodeImatic.Output.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

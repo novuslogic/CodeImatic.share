@@ -1,16 +1,16 @@
-unit ProjectTemplate;
+unit CodeImatic.ProjectTemplate;
 
 interface
 
 Uses NovusTemplate2;
 
 type
-  tProjectTemplate = class(tNovusTemplate2)
+  tcimProjectTemplate = class(tNovusTemplate2)
   protected
   private
     fsTemplateName: String;
   public
-    class function CreateProjectTemplate: tProjectTemplate;
+    class function CreateProjectTemplate: tcimProjectTemplate;
 
     property TemplateName: string
       read fsTemplateName
@@ -19,9 +19,9 @@ type
 
 implementation
 
-class function TProjectTemplate.CreateProjectTemplate: tProjectTemplate;
+class function tcimProjectTemplate.CreateProjectTemplate: tcimProjectTemplate;
 begin
-  Result :=  tProjectTemplate.Create;
+  Result :=  tcimProjectTemplate.Create;
   Result.StartToken := '<';
   Result.EndToken := '>';
   Result.SecondToken := '%';

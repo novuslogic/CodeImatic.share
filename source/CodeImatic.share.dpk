@@ -34,7 +34,7 @@ requires
   rtl,
   NovusCodeLibrary_Utils,
   NovusCodeLibrary_Object,
-  NovusCodeLibrary_Log,
+  NovusCodeLibrary_Logger,
   NovusCodeLibrary_XML,
   NovusCodeLibrary_Parser,
   NovusCodeLibrary_Plugin,
@@ -45,10 +45,10 @@ requires
   PascalScript_Core_D29;
 
 contains
-  ProjectTemplate in 'ProjectTemplate.pas',
-  RuntimeBase in 'RuntimeBase.pas',
-  ObjectPascalCompiler in 'ObjectPascalCompiler.pas',
-  Logger in 'Logger.pas';
+  CodeImatic.ProjectTemplate in 'CodeImatic.ProjectTemplate.pas',
+  CodeImatic.RuntimeBase in 'CodeImatic.RuntimeBase.pas',
+  CodeImatic.ObjectPascal in 'CodeImatic.ObjectPascal.pas',
+  CodeImatic.Output in 'CodeImatic.Output.pas';
 
 end.
 
