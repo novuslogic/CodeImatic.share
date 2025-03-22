@@ -3,13 +3,17 @@ unit CodeImatic.Output;
 interface
 
 Uses NovusObject, NovusLogger, NovusLogger.Provider.Console,
-     NovusLogger.Provider.Files;
+     NovusLogger.Provider.Files, uPSRuntime, uPSUtils;
 
 type
   tcimOutput = class(tNovusObject)
   private
     fbconsoleoutputonly: Boolean;
     fsFilename: string;
+    fbErrors: Boolean;
+    fbFailed: Boolean;
+    fLastExError: TPSError; // use for PascalScript
+    fsLastExParam: tbtstring;
   protected
     foLog: tNovusLogger;
   public
@@ -26,6 +30,13 @@ type
 
     property Filename: string read fsFilename write fsFilename;
 
+    property Errors: Boolean read fbErrors write fbErrors default false;
+
+    property Failed: Boolean read fbFailed write fbFailed default false;
+
+    property LastExError: TPSError read fLastExError write fLastExError;
+
+    property LastExParam: tbtstring read fsLastExParam write fsLastExParam;
   end;
 
 implementation

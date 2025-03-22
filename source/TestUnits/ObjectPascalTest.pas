@@ -3,14 +3,17 @@ unit ObjectPascalTest;
 interface
 
 uses
-  DUnitX.TestFramework, CodeImatic.ObjectPascal, CodeImatic.Output;
+  DUnitX.TestFramework, CodeImatic.ObjectPascal, CodeImatic.Output,
+  CodeImatic.RuntimeBase;
 
 type
   [TestFixture]
   TCodeImaticShareTestObject = class
   public
     [Test]
-    [TestCase('Test1','D:\Projects\CodeImatic.share\source\TestUnits\TestCode\Main.pas, D:\Projects\CodeImatic.share\source\TestUnits\TestCode\')]
+     [TestCase('GetLastError function test','D:\Projects\CodeImatic.share\source\TestUnits\TestCode\GetLastError.pas, D:\Projects\CodeImatic.share\source\TestUnits\TestCode\')]
+    [TestCase('wd function test','D:\Projects\CodeImatic.share\source\TestUnits\TestCode\wd.pas, D:\Projects\CodeImatic.share\source\TestUnits\TestCode\')]
+    [TestCase('Class and Use test','D:\Projects\CodeImatic.share\source\TestUnits\TestCode\Main.pas, D:\Projects\CodeImatic.share\source\TestUnits\TestCode\')]
     procedure CompleObjectPascalTest(aFilename: String; aWorkingdirectory: string; aSearchPath: String; aDebugger: Boolean);
     [Test]
     procedure CompleObjectPascalBasicText;
@@ -25,35 +28,43 @@ implementation
 
 procedure TCodeImaticShareTestObject.CompleObjectPascalTest(aFilename: String; aWorkingdirectory: string; aSearchPath: String; aDebugger: Boolean);
 var
+  fRuntime: tcimRuntimeBase;
   fObjectPascal: tcimObjectPascal;
   fOutput: tcimOutput;
 begin
   Try
-    fOutput:= tcimOutput.Create(True, '');
+    fOutput := tcimOutput.Create(True, '');
 
-    fObjectPascal := tcimObjectPascal.Create(fOutput);
+    fRuntime := tcimRuntimeBase.Create(fOutput);
+
+    fRuntime.WorkingDirectory := aWorkingdirectory;
+
+    fObjectPascal := tcimObjectPascal.Create(fRuntime);
 
     var Script := fObjectPascal.LoadStringFromFile(aFilename);
 
-    if not fObjectPascal.Compile(Script, aWorkingdirectory, aSearchPath, True, False) then
+    if not fObjectPascal.Compile(Script, aWorkingdirectory, aSearchPath, false, False) then
       Assert.IsTrue(False, 'This test intentionally fails');
 
 
   Finally
     fObjectPascal.Free;
-    fOutput.Free;
+    fRuntime.Free;
+   // fOutput.Free;
   End;
 end;
 
 procedure TCodeImaticShareTestObject.CompleObjectPascalBasicText;
 var
+  fRuntime: tcimRuntimeBase;
   fObjectPascal: tcimObjectPascal;
   fOutput: tcimOutput;
 begin
   Try
-    fOutput:= tcimOutput.Create(True, '');
+    fOutput := tcimOutput.Create(True, '');
+    fRuntime := tcimRuntimeBase.Create(fOutput);
 
-    fObjectPascal := tcimObjectPascal.Create(fOutput);
+    fObjectPascal := tcimObjectPascal.Create(fRuntime);
 
     var Script :=
       'PrintLn("Hello from ObjectPascal!");' + sLineBreak +
@@ -65,7 +76,8 @@ begin
 
   Finally
     fObjectPascal.Free;
-    fOutput.Free;
+    fRuntime.Free;
+  //  fOutput.Free;
   End;
 end;
 

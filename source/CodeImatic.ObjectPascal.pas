@@ -5,39 +5,47 @@ interface
 uses
   System.SysUtils,  System.Classes, dwsCompiler,  NovusFileUtils,  dwsXPlatform,
   dwsComp, dwsExprs, dwsSymbols, dwsUtils, CodeImatic.Output, dwsUnitSymbols, System.IOUtils,
-  dwsRTTIConnector, dwsRTTIFunctions, NovusObject, dwsDebugger, dwsInfo,
-  dwsScriptSource;
+  NovusObject, dwsDebugger, dwsDebugFunctions, dwsInfo,
+  dwsRTTIConnector, dwsRTTIFunctions, dwsScriptSource ,  CodeImatic.RuntimeBase,
+  dwsStringFunctions, dwsFunctions, CodeImatic.ObjectPascal.UnitBase,
+  dwsResultFunctions, dwsMathFunctions, dwsMathComplexFunctions, dwsFileFunctions,
+  CodeImatic.ObjectPascal.RTL.SystemExt;
 
 type
   tcimObjectPascal = class(TNovusobject)
   private
   protected
-    fLogger: tcimOutput;
+    fRuntime: tcimRuntimeBase;
+    fOutput: tcimOutput;
     fCompiler: TDelphiWebScript;
     fProgram: IdwsProgram;
     fExecute: IdwsProgramExecution;
     fsWorkingdirectory: String;
     fsSearchPath: string;
     fDebugger: TdwsDebugger;
+    fUnitList: tcimCustomUnitList;
 
     procedure DoDebugEval(exec: TdwsExecution; expr: TExprBase);
     procedure DoDebugSuspended(sender : TObject);
     procedure DoDebugExceptionNotification(const exceptObj : IInfo);
     procedure DoDebugMessage(const msg : String);
 
-    procedure dwsUnitFunctionsWritelnEval(Info: TProgramInfo);
-
     function GetUnitFilename(aUnitName: String): string;
-    procedure AddCustomUnits;
+    procedure AddUnits;
     function DoNeedUnitEx(const unitName : String; var unitSource, unitLocation : String) : IdwsUnit;
     procedure DoIncludeEx(const scriptName: String; var scriptSource, scriptLocation : String);
   public
-    constructor Create(aOutput: tcimOutput);
+    constructor Create(aRuntime: tcimRuntimeBase);
     destructor Destroy;
 
     function LoadStringFromFile(const FileName: string): string;
 
+    procedure AddUnit(aUnit: tcimObjectPascalUnitBase);
+
     function Compile(aScript: String; aWorkingdirectory, aSearchPath: string; aCompileOnly: Boolean;aDebugger: boolean): boolean;
+
+    property oCompiler: TDelphiWebScript
+      read fCompiler;
   end;
 
 implementation
@@ -55,9 +63,11 @@ begin
   end;
 end;
 
-constructor tcimObjectPascal.create(aOutput: tcimOutput);
+constructor tcimObjectPascal.create(aRuntime: tcimRuntimeBase);
 begin
-  fLogger:= aOutput;
+  fRuntime := aRuntime;
+
+  fOutput:= fRuntime.oOutput;
 
   fCompiler := TDelphiWebScript.Create(nil);
 
@@ -67,36 +77,32 @@ begin
   fDebugger.OnDebugMessage:=DoDebugMessage;
   fDebugger.OnNotifyException:=DoDebugExceptionNotification;
   fDebugger.OnDebugSuspended:=DoDebugSuspended;
+
+  fUnitList:= tcimCustomUnitList.Create(tcimObjectPascalUnitBase);
+
+  AddUnits;
 end;
 
 destructor tcimObjectPascal.destroy;
 begin
+  fUnitList.Free;
+
   fDebugger.Free;
   fCompiler.Free;
 end;
 
-procedure tcimObjectPascal.AddCustomUnits;
+procedure tcimObjectPascal.AddUnit(aUnit: tcimObjectPascalUnitBase);
+begin
+  fUnitList.AddUnit(aUnit);
+end;
+
+procedure tcimObjectPascal.AddUnits;
 Var
   FCustomUnit: tdwsUnit;
   FCustomFunction: TdwsFunction;
   FCustomParameter: TdwsParameter;
 begin
-
-  FCustomUnit := tdwsUnit.Create(NIl);
-
-  FCustomUnit.UnitName := 'insternal';
-  FCustomUnit.Script := fCompiler;
-
-  FCustomFunction := FCustomUnit.Functions.Add;
-
-  FCustomFunction.OnEval := dwsUnitFunctionsWritelnEval;
-
-  FCustomFunction.Name := 'Writeln';
-  FCustomParameter := FCustomFunction.Parameters.Add;
-  FCustomParameter.Name := 'Msg';
-  FCustomParameter.IsWritable := True;
-  FCustomParameter.DataType := 'String';
-
+  AddUnit(tcimObjectPascalRTLSystem.Create(fCompiler, fRuntime));
 
 end;
 
@@ -113,13 +119,11 @@ begin
   fCompiler.Config.ScriptPaths.Add(aWorkingdirectory);
   fCompiler.Config.ScriptPaths.Add(aSearchPath);
 
-  AddCustomUnits;
-
   fProgram := fCompiler.Compile(aScript);
 
   if fProgram.Msgs.HasErrors then
     begin
-      fLogger.oLog.AddLogError(Trim(fProgram.Msgs.AsInfo));
+      fOutput.oLog.AddLogError(Trim(fProgram.Msgs.AsInfo));
 
       Exit;
     end;
@@ -136,30 +140,21 @@ begin
   else
   begin
     fDebugger.Breakpoints.Add(11, FProgram.SourceList[0].SourceFile.Name);
-
-
     fExecute := FProgram.CreateNewExecution;
-
-
-
     FDebugger.BeginDebug(fExecute);
-
-
-
     FDebugger.EndDebug;
-
   end;
 
   if fExecute.Msgs.HasErrors then
     begin
-      fLogger.oLog.AddLogError(fExecute.Msgs.AsInfo);
+      fOutput.oLog.AddLogError(fExecute.Msgs.AsInfo);
 
       Exit;
     end
   else
      begin
        If Trim(fExecute.Result.ToString) <> '' then
-         fLogger.oLog.AddLogInformation(fExecute.Result.ToString);
+         fOutput.oLog.AddLogInformation(fExecute.Result.ToString);
 
        Result := True;
      end;
@@ -179,12 +174,6 @@ begin
     begin
       scriptSource := LoadTextFromFile(fsFilename);
     end;
-end;
-
-
-procedure tcimObjectPascal.dwsUnitFunctionsWritelnEval(Info: TProgramInfo);
-begin
-  fLogger.oLog.AddLogInformation(Info.ValueAsString['Msg']);
 end;
 
 function tcimObjectPascal.GetUnitFilename(aUnitName: String): string;

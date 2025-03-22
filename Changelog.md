@@ -3,6 +3,8 @@
 
 ## Release v0.2.0
 
+* New cimRuntime base
+* Rename class cimLogger to cimOutput
 * New ObjectPascalCompiler Class and test units.
 * Now supports Delphi 12 and  NovuscodeLibrary v0.2.0
 

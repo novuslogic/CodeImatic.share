@@ -48,7 +48,9 @@ contains
   CodeImatic.ProjectTemplate in 'CodeImatic.ProjectTemplate.pas',
   CodeImatic.RuntimeBase in 'CodeImatic.RuntimeBase.pas',
   CodeImatic.ObjectPascal in 'CodeImatic.ObjectPascal.pas',
-  CodeImatic.Output in 'CodeImatic.Output.pas';
+  CodeImatic.Output in 'CodeImatic.Output.pas',
+  CodeImatic.ObjectPascal.RTL.SystemExt in 'CodeImatic.ObjectPascal.RTL.SystemExt.pas',
+  CodeImatic.ObjectPascal.UnitBase in 'CodeImatic.ObjectPascal.UnitBase.pas';
 
 end.
 

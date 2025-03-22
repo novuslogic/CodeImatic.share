@@ -179,6 +179,8 @@
         <DCCReference Include="CodeImatic.RuntimeBase.pas"/>
         <DCCReference Include="CodeImatic.ObjectPascal.pas"/>
         <DCCReference Include="CodeImatic.Output.pas"/>
+        <DCCReference Include="CodeImatic.ObjectPascal.RTL.SystemExt.pas"/>
+        <DCCReference Include="CodeImatic.ObjectPascal.UnitBase.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

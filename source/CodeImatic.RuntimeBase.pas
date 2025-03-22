@@ -16,7 +16,9 @@ type
      fCommandLineResult: INovusCommandLineResult;
    protected
    public
-     constructor Create; virtual;
+     constructor Create; overload; virtual;
+     constructor Create(aOutput: tcimOutput); overload; virtual;
+
      destructor Destroy; override;
 
      procedure AddTag(aTagName: String; aTagValue: variant);
@@ -37,7 +39,7 @@ type
         read fsProjectFileName
         write fsProjectFileName;
 
-     property Output: tcimOutput
+     property oOutput: tcimOutput
        read fOutput
        write fOutput;
    end;
@@ -49,14 +51,18 @@ begin
   fTags := TNovusTemplateTags.Create;
 end;
 
+constructor tcimRuntimeBase.Create(aOutput: tcimOutput);
+begin
+  foutput := aOutput;
+  fTags := TNovusTemplateTags.Create;
+end;
+
+
 destructor tcimRuntimeBase.Destroy;
 begin
   inherited Destroy;
 
   if Assigned(fOutput) then fOutput.Free;
-
-
-
 
   fTags.Free;
 end;

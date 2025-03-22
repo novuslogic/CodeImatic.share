@@ -13,5 +13,9 @@ begin
   product := Multiply(x, y);
   WriteLn('Sum: ' + IntToStr(sum));
   WriteLn('Product: ' + IntToStr(product));
+
+
+  println('print test');
+
 end.
 

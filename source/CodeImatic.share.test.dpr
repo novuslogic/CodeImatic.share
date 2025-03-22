@@ -60,6 +60,9 @@ begin
       System.Readln;
     end;
     {$ENDIF}
+
+    System.Write('Done.. press any key to quit.');
+    System.Readln;
   except
     on E: Exception do
       System.Writeln(E.ClassName, ': ', E.Message);
