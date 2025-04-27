@@ -50,7 +50,10 @@ contains
   CodeImatic.ObjectPascal in 'CodeImatic.ObjectPascal.pas',
   CodeImatic.Output in 'CodeImatic.Output.pas',
   CodeImatic.ObjectPascal.RTL.SystemExt in 'CodeImatic.ObjectPascal.RTL.SystemExt.pas',
-  CodeImatic.ObjectPascal.UnitBase in 'CodeImatic.ObjectPascal.UnitBase.pas';
+  CodeImatic.ObjectPascal.UnitBase in 'CodeImatic.ObjectPascal.UnitBase.pas',
+  Codeimatic.ProjectItemBase in 'Codeimatic.ProjectItemBase.pas',
+  CodeImatic.ObjectPascal.Symbol in 'CodeImatic.ObjectPascal.Symbol.pas',
+  CodeImatic.ObjectPascal.Symbol.Byte in 'CodeImatic.ObjectPascal.Symbol.Byte.pas';
 
 end.
 

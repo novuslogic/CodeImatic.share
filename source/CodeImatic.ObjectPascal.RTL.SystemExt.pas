@@ -15,7 +15,7 @@ type
     procedure GetLastErrorFunctionEval(Info: TProgramInfo);
     procedure SysErrorMessageFunctionEval(Info: TProgramInfo);
   public
-    procedure Init; override;
+    procedure Init(aParent: tobject); override;
   end;
 
 implementation
@@ -25,7 +25,7 @@ begin
   Result := 'SystemExt';
 end;
 
-procedure tcimObjectPascalRTLSystem.Init;
+procedure tcimObjectPascalRTLSystem.Init(aParent: tobject);
 begin
   // Writeln
   var fWritelnFunction := AddFunction('Writeln', WritelnFunctionEval);

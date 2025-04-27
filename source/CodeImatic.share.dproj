@@ -158,6 +158,7 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <Debugger_HostApplication>D:\Projects\CodeImatic.assembler\build\CodeImatic.assembler.exe</Debugger_HostApplication>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
@@ -181,6 +182,9 @@
         <DCCReference Include="CodeImatic.Output.pas"/>
         <DCCReference Include="CodeImatic.ObjectPascal.RTL.SystemExt.pas"/>
         <DCCReference Include="CodeImatic.ObjectPascal.UnitBase.pas"/>
+        <DCCReference Include="Codeimatic.ProjectItemBase.pas"/>
+        <DCCReference Include="CodeImatic.ObjectPascal.Symbol.pas"/>
+        <DCCReference Include="CodeImatic.ObjectPascal.Symbol.Byte.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

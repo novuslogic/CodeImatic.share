@@ -3,6 +3,11 @@
 
 ## Release v0.2.0
 
+27/04/2025
+
+* New CodeImatic.ObjectPascal.Symbol.Byte class for Object Pascal "BYTE" Base type
+* New CodeImatic.ObjectPascal.Symbol class for Object Pascal Base types
+* New CodeImatic.ObjectPascal class for Object Pascal based on modified DWScript 
 * New cimRuntime base
 * Rename class cimLogger to cimOutput
 * New ObjectPascalCompiler Class and test units.

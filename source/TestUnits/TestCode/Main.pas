@@ -5,6 +5,7 @@ uses
 
 var
   x, y, sum, product: Integer;
+  l: byte;
 
 begin
   x := 5;

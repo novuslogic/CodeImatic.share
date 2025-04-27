@@ -14,7 +14,7 @@ type
      fOutput: tcimOutput;
      fRuntime: tcimRuntimeBase;
    public
-     constructor Create(aCompiler: TDelphiWebScript;aRuntime:tcimRuntimeBase);
+     constructor Create(aCompiler: TDelphiWebScript;aRuntime:tcimRuntimeBase; aParent: tObject);
      destructor Destroy;
 
      property UnitName: String
@@ -26,7 +26,7 @@ type
      property oRuntime: tcimRuntimeBase
        read fRuntime;
 
-     procedure Init; virtual;
+     procedure Init(aParent: tObject); virtual;
 
      function AddFunction(aName: string; aOnEval : TFuncEvalEvent = nil): TdwsFunction;
    end;
@@ -42,7 +42,7 @@ implementation
 
 // tcimObjectPascalUnitBase
 
-constructor tcimObjectPascalUnitBase.Create(aCompiler: TDelphiWebScript;aRuntime: tcimRuntimeBase);
+constructor tcimObjectPascalUnitBase.Create(aCompiler: TDelphiWebScript;aRuntime: tcimRuntimeBase; aParent: tObject);
 begin
   fCompiler := aCompiler;
   fOutput:= aRuntime.oOutput;
@@ -54,7 +54,7 @@ begin
 
   FCustomUnit.Script := fCompiler;
 
-  Init;
+  Init(aParent);
 end;
 
 destructor tcimObjectPascalUnitBase.Destroy;
@@ -70,7 +70,7 @@ begin
   Result := '';
 end;
 
-procedure tcimObjectPascalUnitBase.Init;
+procedure tcimObjectPascalUnitBase.Init(aParent: tObject);
 begin
 end;
 
