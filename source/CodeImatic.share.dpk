@@ -34,7 +34,7 @@ requires
   rtl,
   NovusCodeLibrary_Utils,
   NovusCodeLibrary_Object,
-  NovusCodeLibrary_Logger,
+ // NovusCodeLibrary_Logger,
   NovusCodeLibrary_Log,
   NovusCodeLibrary_XML,
   NovusCodeLibrary_Parser,

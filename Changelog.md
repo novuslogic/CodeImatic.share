@@ -1,11 +1,17 @@
 # CodeImatic.share Changelog
 
+## Release v0.1.1
+
+03/06/2025
+
+* Fixed NovusLogger Package to NovusLog Package
+
+
 ## Release v0.1.0
 
 22/09/2024
 
 * Now supporting new NovusLogger class 
-
 
 1/9/2024
 
