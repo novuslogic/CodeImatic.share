@@ -53,7 +53,11 @@ contains
   CodeImatic.ObjectPascal.UnitBase in 'CodeImatic.ObjectPascal.UnitBase.pas',
   Codeimatic.ProjectItemBase in 'Codeimatic.ProjectItemBase.pas',
   CodeImatic.ObjectPascal.Symbol in 'CodeImatic.ObjectPascal.Symbol.pas',
-  CodeImatic.ObjectPascal.Symbol.Byte in 'CodeImatic.ObjectPascal.Symbol.Byte.pas';
+  CodeImatic.ObjectPascal.Symbol.Byte in 'CodeImatic.ObjectPascal.Symbol.Byte.pas',
+  CodeImatic.ErrorTypes in 'CodeImatic.ErrorTypes.pas',
+  CodeImatic.PluginsBase in 'CodeImatic.PluginsBase.pas',
+  CodeImatic.ConfigBase in 'CodeImatic.ConfigBase.pas',
+  CodeImatic.PluginInfo in 'CodeImatic.PluginInfo.pas';
 
 end.
 

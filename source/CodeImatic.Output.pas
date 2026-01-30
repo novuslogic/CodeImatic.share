@@ -2,8 +2,9 @@ unit CodeImatic.Output;
 
 interface
 
-Uses NovusObject, NovusLogger, NovusLogger.Provider.Console,
-     NovusLogger.Provider.Files, uPSRuntime, uPSUtils;
+Uses NovusObject, NovusLogger, NovusLogger.Provider.Console,  CodeImatic.ErrorTypes,
+     NovusLogger.Provider.Files, uPSRuntime, uPSUtils,
+     SysUtils;
 
 type
   tcimOutput = class(tNovusObject)
@@ -27,6 +28,9 @@ type
       write fbconsoleoutputonly default false;
 
     property oLog: tNovusLogger read foLog write foLog;
+
+    procedure AddLogFailed(const aMsg: String = '');
+    procedure AddLogErrorType(const aMsg: String; aErrorType: TcimErrorTypes = tcimETNone);
 
     property Filename: string read fsFilename write fsFilename;
 
@@ -66,6 +70,42 @@ end;
 function tcimOutput.CloseLog: boolean;
 begin
   Result := foLog.CloseLog;
+end;
+
+procedure tcimOutput.AddLogFailed(const aMsg: String = '');
+begin
+  oLog.AddLogException(aMsg);
+  fbFailed := True;
+end;
+
+
+
+procedure tcimOutput.AddLogErrorType(const aMsg: String; aErrorType: TcimErrorTypes = tcimETNone);
+Var
+  lsMsg: String;
+begin
+  case aErrorType of
+    TcimErrorTypes.tcimETOverflow_error:
+      lsMsg := SysUtils.format('[Overflow error] (%s)', [aMsg]);
+    TcimErrorTypes.tcimETUnderflow_error:
+      lsMsg := SysUtils.format('[Underflow error] (%s)' , [aMsg]);
+    TcimErrorTypes.tcimETSyntax_Error:
+      lsMsg := SysUtils.format('[Syntax error] (%s)', [aMsg]);
+    TcimErrorTypes.tcimETOutOfRangeBranch:
+      lsMsg := SysUtils.format('[Out of Range Brach] (%s) ', [aMsg]);
+    TcimErrorTypes.tcimETLabelError:
+      lsMsg := SysUtils.format('[Label Error] (%s)', [aMsg]);
+    TcimErrorTypes.tcimETtagUnknown:
+      lsMsg := SysUtils.format('[Tag Unknown] (%s)', [aMsg]);
+    TcimErrorTypes.tcimETEqual_Error:
+      lsMsg := SysUtils.format('[Equal Error] (%s)', [aMsg]);
+    else
+      lsMsg := SysUtils.format('[Error] (%s)', [aMsg]);
+  end;
+
+  oLog.AddLogError(lsMsg);
+
+  fbErrors := True;
 end;
 
 end.
